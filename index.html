@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bitcoin Loader Demo</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, #0d0d0d, #1a1a1a, #2b2b2b);
+        color: white;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 40px;
+        width: 400px;
+        border-radius: 20px;
+        box-shadow: 0 0 25px #ff9900aa;
+        text-align: center;
+    }
+
+    h1 {
+        color: #ff9900;
+        margin-bottom: 10px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin: 15px 0;
+        border-radius: 10px;
+        border: none;
+        font-size: 18px;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 20px;
+        font-size: 18px;
+        background: #ff9900;
+        color: black;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #ffaa22;
+    }
+
+    #loaderBox {
+        margin-top: 20px;
+        display: none;
+    }
+
+    .progressBar {
+        width: 100%;
+        height: 22px;
+        background: #333;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+    .progressFill {
+        height: 100%;
+        width: 0%;
+        background: #ff9900;
+        transition: width 0.2s ease-in-out;
+    }
+
+    #percent {
+        font-size: 22px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Bitcoin Loader Demo</h1>
+    <p>Enter Amount</p>
+
+    <input type="number" id="amount" placeholder="Enter amount..." />
+
+    <p id="calcText"></p>
+
+    <button onclick="calculate()">Calculate 40%</button>
+
+    <button onclick="startLoader()">Start Loading</button>
+
+    <div id="loaderBox">
+        <p id="percent">0%</p>
+        <div class="progressBar">
+            <div class="progressFill" id="progressFill"></div>
+        </div>
+        <p>Please wait... Processing (5 minutes)</p>
+    </div>
+</div>
+
+<script>
+    function calculate() {
+        let amt = document.getElementById("amount").value;
+        if (amt < 1) {
+            alert("Enter a valid amount");
+            return;
+        }
+        let forty = amt * 0.40;
+        document.getElementById("calcText").innerHTML =
+            "40% Required: <b>" + forty.toFixed(2) + " BTC (Demo Only)</b>";
+    }
+
+    function startLoader() {
+        document.getElementById("loaderBox").style.display = "block";
+
+        let percent = 0;
+        let fill = document.getElementById("progressFill");
+
+        // 5 minutes = 300 seconds
+        let totalTime = 300;
+        let interval = setInterval(() => {
+            percent++;
+            fill.style.width = percent + "%";
+            document.getElementById("percent").innerHTML = percent + "%";
+
+            if (percent >= 100) {
+                clearInterval(interval);
+            }
+        }, totalTime * 10); // 5 min divided across 100%
+    }
+</script>
+
+</body>
+</html>
